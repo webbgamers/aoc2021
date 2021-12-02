@@ -13,14 +13,21 @@ fn main() {
         Err(_) => { println!("Enter a vaild day."); return }
     };
     
-    let input = get_input(&day);
+    if day > 25 {
+        println!("Enter a day between 1 and 25.");
+        return
+    }
+
+    let input = match get_input(&day) {
+        Some(input) => input,
+        None => { println!("Verify input file and try again."); return }
+    };
     
     let (p1, p2) = match day {
         1 => day01::solve(input),
         2 => day02::solve(input),
         3 => day03::solve(input),
 
-        d if d > 25 => { println!("Enter a day between 1 and 25."); return },
         _ => (None, None)
     };
 
@@ -30,10 +37,10 @@ fn main() {
     println!("{}\n", match p2 { None => String::from("Not implemented yet"), Some(s) => s.to_string()} );
 }
 
-pub fn get_input(day: &usize) -> String {
+pub fn get_input(day: &usize) -> Option<String> {
     let fp = format!("input/day{:02}.txt", day);
 	match fs::read_to_string(&fp) {
-        Ok(input) => input,
-        Err(error) => { println!("Failed to load input file '{}': {}", &fp, error); String::from("")}
+        Ok(input) => Some(input),
+        Err(error) => { println!("Failed to load input file '{}': {}", &fp, error); None }
     }
 }
