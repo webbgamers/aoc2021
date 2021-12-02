@@ -4,14 +4,23 @@ use std::fs;
 mod day01; mod day02;
 
 fn main() {
-    let day = env::args().nth(1).expect("What day?").parse::<usize>().expect("Enter a valid day");
+    let day = match env::args().nth(1) {
+        Some(day) => day,
+        None => { println!("You must specify a day."); return }
+    };
+    let day = match day.parse::<usize>() {
+        Ok(day) => day,
+        Err(_) => { println!("Enter a vaild day."); return }
+    };
+    
     let input = get_input(&day);
     
     let (p1, p2) = match day {
         1 => day01::solve(input),
         2 => day02::solve(input),
 
-        _ => panic!("Enter a valid day (0-25)")
+        d if d > 25 => { println!("Enter a day between 1 and 25."); return },
+        _ => (None, None)
     };
 
     println!("\nDay {} Part 1:", day);
@@ -21,5 +30,9 @@ fn main() {
 }
 
 pub fn get_input(day: &usize) -> String {
-	fs::read_to_string(format!("input/day{:02}.txt", day)).expect("Failed to load input file")
+    let fp = format!("input/day{:02}.txt", day);
+	match fs::read_to_string(&fp) {
+        Ok(input) => input,
+        Err(error) => { println!("Failed to load input file '{}': {}", &fp, error); String::from("")}
+    }
 }
