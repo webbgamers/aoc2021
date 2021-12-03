@@ -41,7 +41,6 @@ fn part1(input: &String) -> Option<isize> {
 		let num: String = cbits.iter().collect();
 		usize::from_str_radix(&num, 2).unwrap()
 	};
-	println!("{:?}", cbits);
 	Some((gr*er) as isize)
 }
 
@@ -70,10 +69,6 @@ fn part2(input: &String) -> Option<isize> {
 			}
 		}
 		ogr_array = new_array.to_vec();
-		if ogr_array.len() < 20 {
-			println!("iteration {}", i);
-			println!("{:?}", ogr_array)
-		}
 		i += 1;
 	}
 
@@ -94,10 +89,6 @@ fn part2(input: &String) -> Option<isize> {
 			}
 		}
 		csr_array = new_array.to_vec();
-		if csr_array.len() < 20 {
-			println!("iteration {}", i);
-			println!("{:?}", csr_array)
-		}
 		i += 1;
 	}
 
